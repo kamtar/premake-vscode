@@ -76,7 +76,7 @@ end
 --
 function m.vscode_tasks(prj)
 
-	m.files(prj)
+	--m.files(prj) netreba vytvaret symlinky, presunuli jsme workspace do root adresare
 
 	p.utf8()
 	--TODO task per project
@@ -85,10 +85,10 @@ function m.vscode_tasks(prj)
 		_p(1, '"tasks": [{')
 			_p(2, '"type": "shell",')
 			_p(2, '"label": "%s",', build_task_name)
-			_p(2, '"command": "clear && time make %s -r -j`nproc`",', prj.name)
+			_p(2, '"command": "clear && time make %s -r -j4",', prj.name)
 			_p(2, '"args": [],')
 			_p(2, '"options": {')
-				_p(3, '"cwd": "${workspaceFolder}/../"')
+				_p(3, '"cwd": "${workspaceFolder}/"')
 			_p(2, '},')
 			_p(2, '"problemMatcher": [')
 				_p(3, '"$gcc"')
@@ -124,7 +124,7 @@ function m.vscode_launch(prj)
 			_p(2, '"program": "%s/%s",', cfg.buildtarget.directory, prj.name)
 			_p(2, '"args": [],')
 			_p(2, '"stopAtEntry": false,')
-			_p(2, '"cwd": "${workspaceFolder}/../",')
+			_p(2, '"cwd": "${workspaceFolder}/",')
 			_p(2, '"environment": [],')
 			_p(2, '"externalConsole": false,')
 			_p(2, '"MIMode": "gdb",')
@@ -141,7 +141,13 @@ function m.vscode_launch(prj)
 				_p(3, '}')
 			_p(2, '],')
 			_p(2, '"preLaunchTask": "%s",', build_task_name)
-			_p(2, '"miDebuggerPath": "/usr/bin/gdb"')
+      
+     	if os.host() == 'windows' then
+		    _p(2, '"miDebuggerPath": "arm-none-eabi-gdb.exe",')
+	    else
+		    _p(2, '"miDebuggerPath": "arm-none-eabi-gdb",')
+	    end
+		
 		_p(1, '}')
 		end
 		_p(1, ']')
@@ -178,14 +184,20 @@ function m.vscode_c_cpp_properties(prj)
 					end
 				end
 			_p(2, '],')
-			_p(2, '"compilerPath": "/usr/bin/g++",') --TODO premake toolset
-			if cfg.cdialect ~= nil then
+ 	    
+      if os.host() == 'windows' then
+		    _p(2, '"compilerPath": "arm-none-eabi-g++.exe",')
+	    else
+		    _p(2, '"compilerPath": "arm-none-eabi-g++",')
+	    end
+			
+      if cfg.cdialect ~= nil then
 				_p(2, '"cStandard": "%s",', cfg.cdialect:lower())
 			end
 			if cfg.cppdialect ~= nil then
 				_p(2, '"cppStandard": "%s",', cfg.cppdialect:lower())
 			end
-			_p(2, '"intelliSenseMode": "gcc-x64",') --TODO premake toolset
+			_p(2, '"intelliSenseMode": "gcc-arm",') --TODO premake toolset
 			_p(2, '"compilerArgs": [')
 				-- force includes
 				local toolset = m.getcompiler(cfg)
