@@ -35,7 +35,7 @@ function vscode.generateProject(prj)
         p.generate(prj, prj.location .. "/.vscode/tasks.json", vscode.project.vscode_tasks)
         --p.generate(prj, prj.location .. "/.vscode/launch.json", vscode.project.vscode_launch) TODO
         p.generate(prj, prj.location .. "/.vscode/c_cpp_properties.json", vscode.project.vscode_c_cpp_properties)
-        p.generate(prj, prj.location .. "/.vscode/settings.json", vscode.project.vscode_settings())
+        p.generate(prj, prj.location .. "/.vscode/settings.json", vscode.project.vscode_settings)
     end
 end
 

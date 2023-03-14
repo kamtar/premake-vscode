@@ -210,3 +210,17 @@ function m.vscode_c_cpp_properties(prj)
 		_p(1, '"version": 4')
 	_p('}')
 end
+
+function m.vscode_settings(prj)
+    _p('{')
+    _p(1, '"c-cpp-flylint.clang.enable": false,')
+    _p(1, '"c-cpp-flylint.flawfinder.enable": false,')
+    _p(1, '"c-cpp-flylint.flexelint.enable": false,')
+    _p(1, '"c-cpp-flylint.lizard.enable": false,')
+    _p(1, '"c-cpp-flylint.cppcheck.enable": true,')
+    _p(1, '"c-cpp-flylint.debug":true,')
+    _p(1, '"c-cpp-flylint.cppcheck.extraArgs": [')
+    _p(2, '"--disable=information,style"')
+    _p(1, '],')
+    _p('}')
+end
