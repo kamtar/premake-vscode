@@ -78,27 +78,26 @@ function m.vscode_tasks(prj)
 
 	--m.files(prj) netreba vytvaret symlinky, presunuli jsme workspace do root adresare
 
-	p.utf8()
-	--TODO task per project
-	_p('{')
+	  p.utf8()
+	  _p('{')
 		_p(1, '"version": "2.0.0",')
-		_p(1, '"tasks": [{')
-			_p(2, '"type": "shell",')
-			_p(2, '"label": "%s",', build_task_name)
-			_p(2, '"command": "clear && time make %s -r -j4",', prj.name)
-			_p(2, '"args": [],')
-			_p(2, '"options": {')
+			  _p(1, '"tasks": [{')
+			  _p(2, '"type": "shell",')
+			  _p(2, '"label": "%s",', build_task_name)
+			  _p(2, '"command": "clear && time make config=${command:cpptools.activeConfigName} -r -j4",')
+			  _p(2, '"args": [],')
+		  	_p(2, '"options": {')
 				_p(3, '"cwd": "${workspaceFolder}/"')
-			_p(2, '},')
-			_p(2, '"problemMatcher": [')
+			  _p(2, '},')
+			  _p(2, '"problemMatcher": [')
 				_p(3, '"$gcc"')
-			_p(2, '],')
-			_p(2, '"group": {')
+		  	_p(2, '],')
+			  _p(2, '"group": {')
 				_p(3, '"kind": "build",')
 				_p(3, '"isDefault": true')
-			_p(2, '}')
-		_p(1, '}]')
-	_p('}')
+			  _p(2, '}}')
+	  _p(1, ']')
+	  _p('}')
 end
 
 
@@ -169,7 +168,7 @@ function m.vscode_c_cpp_properties(prj)
 		else
 			_p(1, ',{')
 		end
-			_p(2, '"name": "%s %s",', prj.name, cfg.name)
+			_p(2, '"name": "%s",', string.lower(cfg.name))
 			_p(2, '"includePath": [')
 				_p(3, '"${workspaceFolder}/**"')
 				for _, includedir in ipairs(cfg.includedirs) do
